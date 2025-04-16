@@ -11,15 +11,20 @@ let
         { pkgs, config, ... }:
         {
           nixpkgs = {
-            hostPlatform = system;
-            crossSystem = {
-              system = "aarch64-linux";
-            };
+            buildPlatform = system;
+            hostPlatform = "aarch64-linux";
           };
 
           boot.kernelPackages = l4t-kernel;
           hardware.firmware = [ l4t-kernel.kernel ];
           hardware.enableRedistributableFirmware = true;
+
+          fileSystems = {
+            "/" = {
+              device = "/dev/disk/by-label/SWR-NIXOS";
+              fsType = "ext4";
+            };
+          };
 
           # TODO: kernel should be usable without allowing missing modules
           nixpkgs.overlays = [
@@ -29,7 +34,7 @@ let
             })
           ];
 
-
+          boot.loader.grub.enable = false;
           system.build.switchrootImage = switchroot-nixos {
             inherit (config.system.build) kernel initialRamdisk toplevel;
           };
