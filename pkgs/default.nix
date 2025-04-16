@@ -6,12 +6,18 @@ let
   inherit (nixpkgs.lib)
     map
     listToAttrs
+    packagesFromDirectoryRecursive
+    callPackageWith
     ;
   pkgsForSystem = system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
+      localPkgs = packagesFromDirectoryRecursive {
+        callPackage = callPackageWith (pkgs // localPkgs);
+        directory = ./by-name;
+      };
     in
-      null;
+      localPkgs;
   pkgsSets =
     listToAttrs
     (
