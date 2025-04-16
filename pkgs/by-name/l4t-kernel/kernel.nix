@@ -9,6 +9,7 @@
 , lib
 , stdenv
 , runCommand
+, buildPackages
 
 , bc
 , perl
@@ -34,8 +35,11 @@ let
 
     src = sources.combined-src;
 
-    configurePhase = ''
-    '';
+    depsBuildBuild = [ buildPackages.stdenv.cc ];
+
+    ARCH = "arm64";
+
+    dontConfigure = true;
 
     buildPhase = ''
       cd kernel
@@ -60,6 +64,8 @@ let
       perl
     ];
 
+    depsBuildBuild = [ buildPackages.stdenv.cc ];
+
     enableParallelBuilding = true;
 
     KCFLAGS = [
@@ -75,6 +81,12 @@ let
       "-Wno-error=array-bounds=1"
       "-Wno-error=stringop-overread"
     ];
+
+    ARCH = "arm64";
+    CROSS_COMPILE =
+      if stdenv.buildPlatform.config != stdenv.hostPlatform.config
+      then "aarch64-unknown-linux-gnu-"
+      else "";
 
     configurePhase = ''
       mkdir build

@@ -2,6 +2,7 @@
 let
   supportedSystems = [
     "aarch64-linux"
+    "x86_64-linux"
   ];
   inherit (nixpkgs.lib)
     map
@@ -11,7 +12,10 @@ let
     ;
   pkgsForSystem = system:
     let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        localSystem = system;
+        crossSystem = "aarch64-linux";
+      };
       localPkgs = packagesFromDirectoryRecursive {
         callPackage = callPackageWith (pkgs // localPkgs);
         directory = ./by-name;
