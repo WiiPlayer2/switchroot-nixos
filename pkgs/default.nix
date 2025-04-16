@@ -1,4 +1,4 @@
-{ nixpkgs, ... }:
+{ nixpkgs, ... } @ inputs:
 let
   supportedSystems = [
     "aarch64-linux"
@@ -16,8 +16,11 @@ let
         localSystem = system;
         crossSystem = "aarch64-linux";
       };
+      additionalDependencies = {
+        inherit inputs;
+      };
       localPkgs = packagesFromDirectoryRecursive {
-        callPackage = callPackageWith (pkgs // localPkgs);
+        callPackage = callPackageWith (pkgs // additionalDependencies // localPkgs);
         directory = ./by-name;
       };
     in
