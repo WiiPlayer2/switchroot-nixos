@@ -21,6 +21,15 @@ let
           hardware.firmware = [ l4t-kernel.kernel ];
           hardware.enableRedistributableFirmware = true;
 
+          # TODO: kernel should be usable without allowing missing modules
+          nixpkgs.overlays = [
+            (final: super: {
+              makeModulesClosure = x:
+                super.makeModulesClosure (x // { allowMissing = true; });
+            })
+          ];
+
+
           system.build.switchrootImage = switchroot-nixos {
             inherit (config.system.build) kernel initialRamdisk toplevel;
           };
