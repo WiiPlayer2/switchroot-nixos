@@ -84,5 +84,13 @@ rec {
     ln -s ${l4t-platform-tegra-common-src} $out/hardware/nvidia/platform/tegra/common
     ln -s ${l4t-platform-t210-common-src} $out/hardware/nvidia/platform/t210/common
     ln -s ${switchroot-platform-t210-nx-src} $out/hardware/nvidia/platform/t210/nx
+
+    mkdir -p $out/kernel/hardware/nvidia/soc
+    mkdir -p $out/kernel/hardware/nvidia/platform/{tegra,t210}
+    ln -s ${l4t-soc-tegra-src} $out/kernel/hardware/nvidia/soc/tegra
+    ln -s ${l4t-soc-t210-src} $out/kernel/hardware/nvidia/soc/t210
+    ln -s ${l4t-platform-tegra-common-src} $out/kernel/hardware/nvidia/platform/tegra/common
+    ln -s ${l4t-platform-t210-common-src} $out/kernel/hardware/nvidia/platform/t210/common
+    ln -s ${switchroot-platform-t210-nx-src} $out/kernel/hardware/nvidia/platform/t210/nx
   '';
 }

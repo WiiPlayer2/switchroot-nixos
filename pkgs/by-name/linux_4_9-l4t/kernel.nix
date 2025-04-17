@@ -14,4 +14,7 @@ buildLinux rec {
   # sourceRoot = "${sources.combined-src.name}/kernel";
   defconfig = "tegra_linux_defconfig";
   enableCommonConfig = false;
+  extraMakeFlags = [
+    "tegra-dtstree=\"./hardware/nvidia\""
+  ];
 }
