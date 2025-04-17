@@ -13,4 +13,5 @@ buildLinux rec {
   # src = sources.combined-src;
   # sourceRoot = "${sources.combined-src.name}/kernel";
   defconfig = "tegra_linux_defconfig";
+  enableCommonConfig = false;
 }
