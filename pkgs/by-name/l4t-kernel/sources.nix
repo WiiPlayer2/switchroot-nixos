@@ -64,6 +64,15 @@ rec {
     cp --no-preserve=mode -r ${switchroot-kernel-src}/* $out/kernel/
     sed -i 's/\/bin\/pwd/pwd/' $out/kernel/Makefile
     chmod +x $out/kernel/arch/arm64/kernel/vdso/gen_vdso_offsets.sh
+    cp ${./gen-random-seed.sh} $out/kernel/scripts/gcc-plugins/gen-random-seed.sh
+
+    mv $out/kernel/Makefile $out/kernel/Makefile.tmp
+    cat > $out/kernel/Makefile.pre << EOF
+    KERNEL_OVERLAYS :=
+    KERNEL_OVERLAYS += ${switchroot-kernel-nvidia-src}
+    KERNEL_OVERLAYS += ${l4t-kernel-nvgpu-src}
+    EOF
+    cat $out/kernel/Makefile.pre $out/kernel/Makefile.tmp > $out/kernel/Makefile
 
     mkdir -p $out/hardware/nvidia/soc
     mkdir -p $out/hardware/nvidia/platform/{tegra,t210}
