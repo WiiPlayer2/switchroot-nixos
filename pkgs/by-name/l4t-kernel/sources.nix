@@ -1,4 +1,7 @@
-{ fetchFromGitHub, fetchFromGitLab, runCommand }:
+{ fetchFromGitHub
+, fetchFromGitLab
+, runCommand
+}:
 rec {
   # https://gitlab.com/l4t-community
   # kernel sources
@@ -66,13 +69,16 @@ rec {
     chmod +x $out/kernel/arch/arm64/kernel/vdso/gen_vdso_offsets.sh
     cp ${./gen-random-seed.sh} $out/kernel/scripts/gcc-plugins/gen-random-seed.sh
 
-    mv $out/kernel/Makefile $out/kernel/Makefile.tmp
-    cat > $out/kernel/Makefile.pre << EOF
-    KERNEL_OVERLAYS :=
-    KERNEL_OVERLAYS += ${switchroot-kernel-nvidia-src}
-    KERNEL_OVERLAYS += ${l4t-kernel-nvgpu-src}
-    EOF
-    cat $out/kernel/Makefile.pre $out/kernel/Makefile.tmp > $out/kernel/Makefile
+    # mv $out/kernel/Makefile $out/kernel/Makefile.tmp
+    # cat > $out/kernel/Makefile.pre << EOF
+    # KERNEL_OVERLAYS :=
+    # KERNEL_OVERLAYS += ${switchroot-kernel-nvidia-src}
+    # KERNEL_OVERLAYS += ${l4t-kernel-nvgpu-src}
+    # EOF
+    # cat $out/kernel/Makefile.pre $out/kernel/Makefile.tmp > $out/kernel/Makefile
+
+    # (echo "dts-dirs += nvidia"; cat $out/kernel/arch/arm64/boot/dts/Makefile) > $out/kernel/arch/arm64/boot/dts/Makefile.tmp
+    # mv $out/kernel/arch/arm64/boot/dts/Makefile.tmp $out/kernel/arch/arm64/boot/dts/Makefile
 
     mkdir -p $out/hardware/nvidia/soc
     mkdir -p $out/hardware/nvidia/platform/{tegra,t210}
@@ -85,12 +91,16 @@ rec {
     ln -s ${l4t-platform-t210-common-src} $out/hardware/nvidia/platform/t210/common
     ln -s ${switchroot-platform-t210-nx-src} $out/hardware/nvidia/platform/t210/nx
 
-    mkdir -p $out/kernel/hardware/nvidia/soc
-    mkdir -p $out/kernel/hardware/nvidia/platform/{tegra,t210}
-    ln -s ${l4t-soc-tegra-src} $out/kernel/hardware/nvidia/soc/tegra
-    ln -s ${l4t-soc-t210-src} $out/kernel/hardware/nvidia/soc/t210
-    ln -s ${l4t-platform-tegra-common-src} $out/kernel/hardware/nvidia/platform/tegra/common
-    ln -s ${l4t-platform-t210-common-src} $out/kernel/hardware/nvidia/platform/t210/common
-    ln -s ${switchroot-platform-t210-nx-src} $out/kernel/hardware/nvidia/platform/t210/nx
+    mkdir -p $out/kernel/nvidia/soc
+    mkdir -p $out/kernel/nvidia/platform/{tegra,t210}
+    ln -s ${l4t-soc-tegra-src} $out/kernel/nvidia/soc/tegra
+    ln -s ${l4t-soc-t210-src} $out/kernel/nvidia/soc/t210
+    ln -s ${l4t-platform-tegra-common-src} $out/kernel/nvidia/platform/tegra/common
+    ln -s ${l4t-platform-t210-common-src} $out/kernel/nvidia/platform/t210/common
+    ln -s ${switchroot-platform-t210-nx-src} $out/kernel/nvidia/platform/t210/nx
+
+    mkdir -p $out/kernel/nvidia/nvgpu
+    cp --no-preserve=mode -r ${switchroot-kernel-nvidia-src}/* $out/kernel/nvidia/
+    cp --no-preserve=mode -r ${l4t-kernel-nvgpu-src}/* $out/kernel/nvidia/nvgpu/
   '';
 }
