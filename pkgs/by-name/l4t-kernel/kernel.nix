@@ -92,15 +92,19 @@ let
       mkdir build
       export buildRoot="$(pwd)/build"
 
-      ln -sv ${configfile} kernel/.config
+      ln -sv ${configfile} $buildRoot/.config
+      # ln -sv ${configfile} kernel/.config
 
       cd kernel
-      make prepare
-      make modules_prepare
+      make prepare O="$buildRoot"
+      make modules_prepare O="$buildRoot"
+      # make prepare
+      # make modules_prepare
     '';
 
     buildPhase = ''
-      make -j$NIX_BUILD_CORES tegra-dtstree="../hardware/nvidia"
+      # make -j1 --debug=n tegra-dtstree="${sources.combined-src}/hardware/nvidia" dtbs
+      make -j20 -d tegra-dtstree="../hardware/nvidia" O="$buildRoot" Image vmlinux modules dtbs DTC_FLAGS=-@
     '';
 
     installPhase = ''

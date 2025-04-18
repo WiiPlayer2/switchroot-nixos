@@ -1,0 +1,10 @@
+diff -Naur A/Makefile B/Makefile
+--- A/Makefile	1970-01-01 00:00:00.000000000 +0000
++++ B/Makefile	1970-01-01 00:00:00.000000000 +0000
+@@ -1313,4 +1313,6 @@
+ 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+ 
++dtbs_install:
++	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.dtbinst obj=arch/arm64/boot/dts
+ # ---------------------------------------------------------------------------
+ # Modules

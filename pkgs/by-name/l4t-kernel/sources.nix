@@ -3,34 +3,34 @@
 , runCommand
 }:
 rec {
-  # https://gitlab.com/l4t-community
+  # https://github.com/theofficialgman/l4t-image-buildscripts
   # kernel sources
-  switchroot-kernel-src = fetchFromGitLab {
-    owner = "l4t-community";
-    repo = "kernel/l4t-kernel-4.9";
-    rev = "688864ead25c5643ec9ae997b08c06538e15c873";
-    hash = "sha256-tJu1oY7/z0uv6NZOtuYse6LAJ8Pf764PmO5X6Lnoaz4=";
+  switchroot-kernel-src = fetchFromGitHub {
+    owner = "theofficialgman";
+    repo = "switch-l4t-kernel-4.9";
+    rev = "6f926926d94a54aa6f9128234dd1a3833f6828d8";
+    hash = "sha256-usEQGVq4HW4cRQpwSmq4VZeAzthuVaLgYjL38W2iafM=";
   };
 
-  switchroot-kernel-nvidia-src = fetchFromGitLab {
-    owner = "l4t-community";
-    repo = "kernel/switch-l4t-kernel-nvidia";
-    rev = "ed735c6dc5ceb52c4fcadc77e100ebede5bdd495";
-    hash = "sha256-OMb3EcZ/CTCeKP/tTzSgiXkIJg/O4IlKppMtq4QuMuM=";
+  switchroot-kernel-nvidia-src = fetchFromGitHub {
+    owner = "theofficialgman";
+    repo = "switch-l4t-kernel-nvidia";
+    rev = "76e6d48970b451c242c20f298b8d63027836bb0b";
+    hash = "sha256-BNES5wSGUUJo2s9tx6IfZLzn+tzFbUEd8XZm+pEdQuk=";
   };
 
   l4t-kernel-nvgpu-src = fetchFromGitLab {
     owner = "switchroot";
     repo = "kernel/l4t-kernel-nvgpu";
-    rev = "1ae0167d360287ca78f5a2572f0de42594140312"; # r32.6.1
-    hash = "sha256-SK/x/T2mMf9Kcz9rOXbyjPb84QqJf1QaD+lwSFQ+eq8=";
+    rev = "2c441a83d44857b71a599acfe76395942ea936bf"; # r32.6.1
+    hash = "sha256-a/rZzYWIFQmg7hK7O778C2xRYhPuR2C8G3n/1IwSP6E=";
   };
 
   # device tree sources
   switchroot-platform-t210-nx-src = fetchFromGitHub {
-    owner = "CTCaer";
+    owner = "theofficialgman";
     repo = "switch-l4t-platform-t210-nx";
-    rev = "linux-5.1.2";
+    rev = "cf785c4c176499b301170d79fe57b77f365b73cd";
     hash = "sha256-C2ShD5L111prt2GdoL7ZsScHav5Jmxhx5Ep2tMp/Tbc=";
   };
 
@@ -44,8 +44,8 @@ rec {
   l4t-soc-tegra-src = fetchFromGitLab {
     owner = "switchroot";
     repo = "kernel/l4t-soc-tegra";
-    rev = "d2692b96d3a89e26d3bad94eb7e6bc4caccbdbdb"; # r32.6.1
-    hash = "sha256-uXBk9Rfbhxc8fBEJukwrcH5xNcA0hlEzAMSW9wQ3NIY=";
+    rev = "31df21b2d0039982fab538c740959d1ca68c4d37"; # r32.6.1
+    hash = "sha256-17DsTlNnh7J+8pdiD7XdA5D1bNLBwhecql53dcajw2c=";
   };
 
   l4t-platform-t210-common-src = fetchFromGitLab {
@@ -58,8 +58,8 @@ rec {
   l4t-platform-tegra-common-src = fetchFromGitLab {
     owner = "switchroot";
     repo = "kernel/l4t-platform-tegra-common";
-    rev = "1677f40a0b1bfa7c7273143b0f4944de28b73444"; # r32.6.1
-    hash = "sha256-sEZ51GyLvtS8pYP3jxATZDCJ7mpUI02VL3zFeWN1w1M=";
+    rev = "467507c8cb0de0b91ff28a97b9f18f3daf6230a5"; # r32.6.1
+    hash = "sha256-s/ozD1NY+QegUWHoFqhF6KwU+Sds3JS2XS+boHEYGhw=";
   };
 
   combined-src = runCommand "combined-src" {} ''

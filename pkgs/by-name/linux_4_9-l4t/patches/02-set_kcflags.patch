@@ -1,0 +1,6 @@
+diff -Naur A/Makefile B/Makefile
+--- A/Makefile	1970-01-01 00:00:00.000000000 +0000
++++ B/Makefile	1970-01-01 00:00:00.000000000 +0000
+@@ -1,1 +1,2 @@
++KCFLAGS := -march=armv8-a+simd+crypto+crc -mtune=cortex-a57 --param=l1-cache-line-size=64 --param=l1-cache-size=32 --param=l2-cache-size=2048 -Wno-error=unused-label -Wno-error=unused-variable -Wno-error=stringop-overflow -Wno-error=address -Wno-error=compare-distinct-pointer-types -Wno-error=stringop-overread -Wno-error=misleading-indentation -Wno-error=maybe-uninitialized -Wno-error=stringop-truncation -Wno-error=array-bounds=1 -Wno-error=address-of-packed-member -Wno-error=incompatible-pointer-types -Wno-error=packed-not-aligned -Wno-error=zero-length-bounds -Wno-error=enum-int-mismatch -Wno-error=restrict -Wno-error=uninitialized -Wno-error=int-conversion -Wno-error=duplicate-decl-specifier -Wno-error=tautological-compare -Wno-error=format -Wno-error=dangling-pointer -Wno-error=array-parameter -Wno-error=sizeof-pointer-memaccess
+ ifeq ($(KERNEL_OVERLAYS),)
