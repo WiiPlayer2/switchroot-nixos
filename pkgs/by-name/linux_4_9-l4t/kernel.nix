@@ -4,11 +4,13 @@
 , buildLinux
 , fetchurl
 , lib
-}:
+
+, ...
+} @ args:
 let
   # buildLinux = callPackage ./buildLinux { inherit inputs; };
 in
-buildLinux rec {
+buildLinux (args // rec {
   version = "4.9.140-l4t";
   modDirVersion = version;
   src = "${sources.combined-src}/kernel";
@@ -123,4 +125,4 @@ buildLinux rec {
   #   # "-Wno-error=stringop-overread"
   #   "-Wno-error=unused-variable"
   # ];
-}
+} // (args.argsOverride or {}))

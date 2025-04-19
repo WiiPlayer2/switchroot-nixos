@@ -1,5 +1,5 @@
 { switchroot-nixos
-, l4t-kernel
+, linuxPackages_4_9-l4t
 
 , inputs
 , system
@@ -15,8 +15,8 @@ let
             hostPlatform = "aarch64-linux";
           };
 
-          boot.kernelPackages = l4t-kernel;
-          hardware.firmware = [ l4t-kernel.kernel ];
+          boot.kernelPackages = linuxPackages_4_9-l4t;
+          hardware.firmware = [ linuxPackages_4_9-l4t.kernel ];
           hardware.enableRedistributableFirmware = true;
 
           fileSystems = {
