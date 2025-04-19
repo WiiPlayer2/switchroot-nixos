@@ -5,6 +5,6 @@ diff -Naur A/Makefile B/Makefile
  	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
  
 +dtbs_install:
-+	$(Q)$(MAKE) -f $(srctree)/scripts/Makefile.dtbinst obj=arch/arm64/boot/dts
++	$(Q)mkdir -p $(INSTALL_DTBS_PATH); cp $(buildRoot)/arch/arm64/boot/dts/tegra210-odin.dtb $(buildRoot)/arch/arm64/boot/dts/tegra210b01-fric.dtb $(buildRoot)/arch/arm64/boot/dts/tegra210b01-odin.dtb $(buildRoot)/arch/arm64/boot/dts/tegra210b01-vali.dtb $(INSTALL_DTBS_PATH)/
  # ---------------------------------------------------------------------------
  # Modules
