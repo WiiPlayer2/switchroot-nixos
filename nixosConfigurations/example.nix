@@ -17,6 +17,10 @@ inputs.nixpkgs.lib.nixosSystem {
           settings.PermitRootLogin = "yes";
         };
         networking.networkmanager.enable = true;
+        nix.settings.experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
 
         boot.kernelPackages = pkgs.linuxPackages_4_9-l4t;
         hardware.firmware = [ pkgs.linuxPackages_4_9-l4t.kernel ];
