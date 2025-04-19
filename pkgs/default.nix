@@ -13,6 +13,7 @@ let
   pkgsForSystem = system:
     let
       pkgs = import nixpkgs {
+        # inherit system;
         localSystem = system;
         crossSystem = "aarch64-linux";
       };

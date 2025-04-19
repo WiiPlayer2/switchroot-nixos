@@ -2,6 +2,7 @@
 , runCommand
 , writeShellApplication
 , closureInfo
+, inputs
 
 , rsync
 }:
@@ -15,6 +16,7 @@ let
   uInitrd = callPackage ./uInitrd.nix { inherit initialRamdisk; };
   boot-scr = callPackage ./boot-scr.nix { inherit toplevel; };
   dtb-image = callPackage ./dtb-image.nix { inherit kernel; };
+  icon = callPackage ./icon.nix { inherit inputs; };
 
   closure-info = closureInfo {
     rootPaths = [ toplevel ];
@@ -42,6 +44,7 @@ let
 
     mkdir -p $out/switchroot/nixos
 
+    cp ${icon} $out/switchroot/nixos/icon.bmp
     cp ${uInitrd} $out/switchroot/nixos/initramfs
     cp ${uImage} $out/switchroot/nixos/uImage
     cp ${boot-scr} $out/switchroot/nixos/boot.scr
