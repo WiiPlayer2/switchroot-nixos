@@ -1,5 +1,4 @@
 { switchroot-nixos
-, linuxPackages_4_9-l4t
 
 , inputs
 , system
@@ -22,8 +21,8 @@ let
           };
           networking.networkmanager.enable = true;
 
-          boot.kernelPackages = linuxPackages_4_9-l4t;
-          hardware.firmware = [ linuxPackages_4_9-l4t.kernel ];
+          boot.kernelPackages = pkgs.linuxPackages_4_9-l4t;
+          hardware.firmware = [ pkgs.linuxPackages_4_9-l4t.kernel ];
           hardware.enableRedistributableFirmware = true;
 
           fileSystems = {
@@ -39,10 +38,11 @@ let
 
           # TODO: kernel should be usable without allowing missing modules
           nixpkgs.overlays = [
+            inputs.self.overlays.switchroot-nixos
           ];
 
           boot.loader.grub.enable = false;
-          system.build.switchrootImage = switchroot-nixos {
+          system.build.switchrootImage = pkgs.switchroot-nixos {
             inherit (config.system.build) kernel initialRamdisk toplevel;
           };
         }

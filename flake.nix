@@ -11,5 +11,7 @@
 
   outputs = inputs: {
     packages = import ./pkgs inputs;
+    overlays = import ./overlays inputs;
+    nixosConfigurations = import ./nixosConfigurations inputs;
   };
 }
