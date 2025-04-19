@@ -31,6 +31,10 @@ let
               device = "/dev/disk/by-label/SWR-NIXOS";
               fsType = "ext4";
             };
+            "/boot" = {
+              device = "/dev/mmcblk0p1";
+              fsType = "vfat";
+            };
           };
 
           # TODO: kernel should be usable without allowing missing modules

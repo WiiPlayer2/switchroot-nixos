@@ -388,7 +388,9 @@ let
       # fbcon=map:''${fbconsole} consoleblank=0 \
       # nvdec_enabled=0 tegra_fbmem=0x400000@0xf5a00000 "
       setenv bootargs ''${bootargs_extra} "\
-        init=${toplevel}/init
+        init=${toplevel}/init \
+        pmc_r2p.enabled=1 pmc_r2p.action=''${r2p_action} \
+        pmc_r2p.param1=''${autoboot} pmc_r2p.param2=''${autoboot_list} \
         fbcon=map:''${fbconsole} \
         tegra_fbmem=0x400000@0xf5a00000 \
         "
