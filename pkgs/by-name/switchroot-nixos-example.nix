@@ -39,10 +39,6 @@ let
 
           # TODO: kernel should be usable without allowing missing modules
           nixpkgs.overlays = [
-            (final: super: {
-              makeModulesClosure = x:
-                super.makeModulesClosure (x // { allowMissing = true; });
-            })
           ];
 
           boot.loader.grub.enable = false;
