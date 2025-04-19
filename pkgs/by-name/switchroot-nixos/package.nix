@@ -5,6 +5,7 @@
 , inputs
 
 , rsync
+, openssh
 }:
 {
   kernel,
@@ -37,18 +38,34 @@ let
     '';
   };
 
-  package = runCommand "switchroot-boot" {} ''
-    mkdir -p $out/misc
+  copy-via-ssh = writeShellApplication {
+    name = "copy-via-ssh";
+    runtimeInputs = [
+      openssh
+    ];
+    text = ''
+      TARGET="$1"
+      nix-copy-closure --to "$TARGET" ${toplevel}
+      scp ${switchroot-boot}/* "$TARGET:/boot/switchroot/nixos/"
+    '';
+  };
+
+  switchroot-boot = runCommand "switchroot-boot" {} ''
+    mkdir -p $out
+
+    cp ${icon} $out/icon.bmp
+    cp ${uInitrd} $out/initramfs
+    cp ${uImage} $out/uImage
+    cp ${boot-scr} $out/boot.scr
+    cp ${dtb-image} $out/nx-plat.dtimg
+  '';
+
+  package = runCommand "switchroot-pkg" {} ''
+    mkdir -p $out/{misc,switchroot/nixos}
     ln -s ${closure-info} $out/misc/closure-info
     ln -s ${copy-closure}/bin/copy-closure-to $out/misc/
-
-    mkdir -p $out/switchroot/nixos
-
-    cp ${icon} $out/switchroot/nixos/icon.bmp
-    cp ${uInitrd} $out/switchroot/nixos/initramfs
-    cp ${uImage} $out/switchroot/nixos/uImage
-    cp ${boot-scr} $out/switchroot/nixos/boot.scr
-    cp ${dtb-image} $out/switchroot/nixos/nx-plat.dtimg
+    ln -s ${copy-via-ssh}/bin/copy-via-ssh $out/misc/
+    ln -s ${switchroot-boot} $out/switchroot/nixos
   '';
 in
   package
