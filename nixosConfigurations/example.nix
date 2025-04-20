@@ -2,13 +2,17 @@ inputs:
 inputs.nixpkgs.lib.nixosSystem {
   modules = [
     (
-      { pkgs, config, ... }:
+      { lib, pkgs, config, ... }:
       {
         nixpkgs = {
           # buildPlatform = system;
           # buildPlatform = "x86_64-linux"; # TODO: for now only cross compilation
           # hostPlatform = "aarch64-linux";
           system = "aarch64-linux";
+          config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+            "nvidia-x11"
+            "nvidia-settings"
+          ];
         };
 
         users.users.root.initialPassword = "nixos";
@@ -22,9 +26,53 @@ inputs.nixpkgs.lib.nixosSystem {
           "flakes"
         ];
 
+        services = {
+          xserver = {
+            enable = true;
+            displayManager.lightdm.enable = true;
+            desktopManager.cinnamon.enable = true;
+            videoDrivers = [ "nvidia" ];
+            drivers = [
+              {
+                name = "nvidia";
+                modules = [];
+                # driverName = "nvidia";
+                display = true;
+                screenSection = ''
+                  Option         "metamodes" "DSI-0: nvidia-auto-select @1280x720 +0+0 {ViewPortIn=1280x720, ViewPortOut=720x1280+0+0, Rotation=90}"
+                '';
+              }
+            ];
+            monitorSection = ''
+              ModelName   "DFP-0"
+              #DisplaySize 77 137
+            '';
+            deviceSection = ''
+              Option      "AllowUnofficialGLXProtocol" "true"
+              Option      "DPMS" "false"
+              # Allow X server to be started even if no display devices are connected.
+              Option      "AllowEmptyInitialConfiguration" "true"
+              Option      "Monitor-DSI-0" "Monitor[0]"
+              # Option      "Monitor-DP-0" "Monitor1"
+            '';
+          };
+          # displayManager.enable = true;
+        };
+        boot.blacklistedKernelModules = [
+          "nouveau"
+          "nvidiafb"
+        ];
+        boot.kernelModules = [
+          "nvgpu"
+        ];
+
         boot.kernelPackages = pkgs.linuxPackages_4_9-l4t;
         hardware.firmware = [ pkgs.linuxPackages_4_9-l4t.kernel ];
         hardware.enableRedistributableFirmware = true;
+        # hardware.nvidia.enabled = true;
+        hardware.nvidia.open = false;
+        hardware.nvidia.package = null;
+        nixpkgs.config.nvidia.acceptLicense = true;
 
         fileSystems = {
           "/" = {
@@ -37,7 +85,6 @@ inputs.nixpkgs.lib.nixosSystem {
           };
         };
 
-        # TODO: kernel should be usable without allowing missing modules
         nixpkgs.overlays = [
           inputs.self.overlays.switchroot-nixos
         ];
