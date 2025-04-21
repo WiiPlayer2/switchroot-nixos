@@ -35,7 +35,7 @@ inputs.nixpkgs.lib.nixosSystem {
             drivers = [
               {
                 name = "nvidia";
-                modules = [];
+                modules = [ pkgs.nvidiaPackages-l4t.x11-module ];
                 # driverName = "nvidia";
                 display = true;
                 screenSection = ''
