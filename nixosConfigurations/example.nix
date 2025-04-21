@@ -16,6 +16,10 @@ inputs.nixpkgs.lib.nixosSystem {
         };
 
         users.users.root.initialPassword = "nixos";
+        users.users.nixos = {
+          initialPassword = "nixos";
+          isNormalUser = true;
+        };
         services.openssh = {
           enable = true;
           settings.PermitRootLogin = "yes";
@@ -29,8 +33,15 @@ inputs.nixpkgs.lib.nixosSystem {
         services = {
           xserver = {
             enable = true;
-            displayManager.lightdm.enable = true;
-            desktopManager.cinnamon.enable = true;
+            displayManager.lightdm = {
+              enable = true;
+              greeters = {
+                gtk.enable = false;
+                tiny.enable = true;
+              };
+            };
+            # desktopManager.cinnamon.enable = true;
+            desktopManager.xterm.enable = true;
             videoDrivers = [ "nvidia" ];
             drivers = [
               {
@@ -56,7 +67,7 @@ inputs.nixpkgs.lib.nixosSystem {
               # Option      "Monitor-DP-0" "Monitor1"
             '';
           };
-          # displayManager.enable = true;
+          displayManager.defaultSession = "xterm";
         };
         boot.blacklistedKernelModules = [
           "nouveau"
@@ -67,7 +78,10 @@ inputs.nixpkgs.lib.nixosSystem {
         ];
 
         boot.kernelPackages = pkgs.linuxPackages_4_9-l4t;
-        hardware.firmware = [ pkgs.linuxPackages_4_9-l4t.kernel ];
+        hardware.firmware = with pkgs; [
+          linuxPackages_4_9-l4t.kernel
+          nvidiaPackages-l4t.tegra-firmware
+        ];
         hardware.enableRedistributableFirmware = true;
         # hardware.nvidia.enabled = true;
         hardware.nvidia.open = false;
@@ -87,6 +101,25 @@ inputs.nixpkgs.lib.nixosSystem {
 
         nixpkgs.overlays = [
           inputs.self.overlays.switchroot-nixos
+          (final: prev: {
+            xorg = prev.xorg.overrideScope (final': prev': {
+              xorgserver = prev'.xorgserver.overrideAttrs (prevAttrs: {
+                version = "1.20.14";
+                src = prev.fetchurl {
+                  url = "mirror://xorg/individual/xserver/xorg-server-1.20.14.tar.gz";
+                  hash = "sha256-VLGZySgP+L8Pc6VKdZZFvQ7u2nJV0cmTENW3WV86wGY=";
+                };
+                patches = prevAttrs.patches ++ [
+                  # https://github.com/NixOS/nixpkgs/pull/147238
+                  (prev.fetchpatch {
+                    name = "stdbool.patch";
+                    url = "https://gitlab.freedesktop.org/xorg/xserver/-/commit/454b3a826edb5fc6d0fea3a9cfd1a5e8fc568747.diff";
+                    sha256 = "1l9qg905jvlw3r0kx4xfw5m12pbs0782v2g3267d1m6q4m6fj1zy";
+                  })
+                ];
+              });
+            });
+          })
         ];
 
         boot.loader.grub.enable = false;

@@ -4,6 +4,9 @@ let
   tegra-lib = callPackage ./tegra-lib.nix {
     inherit (sources) nvidia-drivers;
   };
+  tegra-firmware = callPackage ./tegra-firmware.nix {
+    inherit (sources) nvidia-drivers;
+  };
   x11-module = callPackage ./x11-module.nix {
     inherit (sources) nvidia-drivers;
     inherit tegra-lib;
@@ -13,5 +16,6 @@ in
   inherit
     sources # TODO: remove
     x11-module
+    tegra-firmware
     ;
 }
