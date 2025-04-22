@@ -95,6 +95,7 @@ inputs.nixpkgs.lib.nixosSystem {
         hardware.nvidia.open = false;
         hardware.nvidia.package = null;
         nixpkgs.config.nvidia.acceptLicense = true;
+        hardware.bluetooth.enable = true;
 
         fileSystems = {
           "/" = {
