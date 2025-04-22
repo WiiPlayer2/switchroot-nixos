@@ -41,9 +41,12 @@ inputs.nixpkgs.lib.nixosSystem {
             displayManager.lightdm = {
               enable = true;
               greeters = {
-                gtk.enable = false;
-                tiny.enable = true;
+                gtk.enable = true;
+                # tiny.enable = true;
               };
+              extraConfig = ''
+                logind-check-graphical=false
+              '';
             };
             # desktopManager.cinnamon.enable = true;
             desktopManager.xterm.enable = true;
