@@ -104,6 +104,10 @@ inputs.nixpkgs.lib.nixosSystem {
           };
         };
 
+        boot.initrd.postDeviceCommands = ''
+          echo 0 > /sys/class/graphics/fb0/state
+        '';
+
         nixpkgs.overlays = [
           inputs.self.overlays.switchroot-nixos
           (final: prev: {
