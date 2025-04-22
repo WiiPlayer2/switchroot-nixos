@@ -51,8 +51,7 @@ inputs.nixpkgs.lib.nixosSystem {
                 logind-check-graphical=false
               '';
             };
-            # desktopManager.cinnamon.enable = true;
-            desktopManager.xterm.enable = true;
+            desktopManager.xfce.enable = true;
             videoDrivers = [ "nvidia" ];
             drivers = [
               {
@@ -78,7 +77,6 @@ inputs.nixpkgs.lib.nixosSystem {
               # Option      "Monitor-DP-0" "Monitor1"
             '';
           };
-          displayManager.defaultSession = "xterm";
         };
         boot.blacklistedKernelModules = [
           "nouveau"
