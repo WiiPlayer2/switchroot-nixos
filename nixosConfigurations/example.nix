@@ -15,6 +15,11 @@ inputs.nixpkgs.lib.nixosSystem {
           ];
         };
 
+        environment.systemPackages = with pkgs; [
+          tmux
+          btop
+        ];
+
         users.users.root.initialPassword = "nixos";
         users.users.nixos = {
           initialPassword = "nixos";
