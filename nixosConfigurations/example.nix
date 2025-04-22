@@ -24,6 +24,9 @@ inputs.nixpkgs.lib.nixosSystem {
         users.users.nixos = {
           initialPassword = "nixos";
           isNormalUser = true;
+          extraGroups = [
+            "wheel"
+          ];
         };
         services.openssh = {
           enable = true;
