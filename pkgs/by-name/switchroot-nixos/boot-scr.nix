@@ -2,11 +2,12 @@
 
 , writeTextFile
 , runCommand
+, writeShellApplication
 , ubootTools
 }:
 let
-  boot-cmd = writeTextFile {
-    name = "boot.cmd";
+  boot-cmd-main = writeTextFile {
+    name = "boot.cmd.post";
     text = ''
       # Set defaults env variables if they do not exist.
       setenv boot_dir ''${prefix}
@@ -388,7 +389,7 @@ let
       # fbcon=map:''${fbconsole} consoleblank=0 \
       # nvdec_enabled=0 tegra_fbmem=0x400000@0xf5a00000 "
       setenv bootargs ''${bootargs_extra} "\
-        init=${toplevel}/init \
+        init=''${init} \
         pmc_r2p.enabled=1 pmc_r2p.action=''${r2p_action} \
         pmc_r2p.param1=''${autoboot} pmc_r2p.param2=''${autoboot_list} \
         fbcon=map:''${fbconsole} consoleblank=0 \
@@ -407,8 +408,32 @@ let
       reset
     '';
   };
-  boot-scr = runCommand "boot.scr" {} ''
-    ${ubootTools}/bin/mkimage -A arm64 -C none -T script -d ${boot-cmd} $out
+  build-boot-cmd = writeShellApplication {
+    name = "build-boot-cmd";
+    text = ''
+      TOPLEVEL="$1"
+      echo "setenv init $TOPLEVEL/init"
+      cat ${boot-cmd-main}
+    '';
+  };
+  build-boot-scr = writeShellApplication {
+    name = "build-boot-scr";
+    runtimeInputs = [
+      ubootTools
+      build-boot-cmd
+    ];
+    text = ''
+      TOPLEVEL="$1"
+      OUT="$2"
+      boot_scr="$(mktemp)"
+      build-boot-cmd "$TOPLEVEL" > "$boot_scr"
+      mkimage -A arm64 -C none -T script -d "$boot_scr" "$OUT"
+    '';
+  };
+  boot-scr = runCommand "boot.scr" {
+    passthru.buildScript = build-boot-scr;
+  } ''
+    ${build-boot-scr}/bin/build-boot-scr ${toplevel} $out
   '';
 in
   boot-scr

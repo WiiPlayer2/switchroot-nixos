@@ -50,7 +50,11 @@ let
     '';
   };
 
-  switchroot-boot = runCommand "switchroot-boot" {} ''
+  switchroot-boot = runCommand "switchroot-boot" {
+    passthru = {
+      inherit icon uInitrd uImage boot-scr dtb-image;
+    };
+  } ''
     mkdir -p $out
 
     cp ${icon} $out/icon.bmp
@@ -60,8 +64,10 @@ let
     cp ${dtb-image} $out/nx-plat.dtimg
   '';
 
-  package = runCommand "switchroot-pkg" {} ''
-    mkdir -p $out/{misc,switchroot/nixos}
+  package = runCommand "switchroot-pkg" {
+    passthru.boot = switchroot-boot;
+  } ''
+    mkdir -p $out/{misc,switchroot}
     ln -s ${closure-info} $out/misc/closure-info
     ln -s ${copy-closure}/bin/copy-closure-to $out/misc/
     ln -s ${copy-via-ssh}/bin/copy-via-ssh $out/misc/
