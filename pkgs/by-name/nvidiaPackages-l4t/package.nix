@@ -17,5 +17,6 @@ in
     sources # TODO: remove
     x11-module
     tegra-firmware
+    tegra-lib
     ;
 }

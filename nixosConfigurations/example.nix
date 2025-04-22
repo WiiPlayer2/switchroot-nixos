@@ -99,6 +99,12 @@ inputs.nixpkgs.lib.nixosSystem {
         hardware.nvidia.package = null;
         nixpkgs.config.nvidia.acceptLicense = true;
         hardware.bluetooth.enable = true;
+        hardware.graphics = {
+          enable = true;
+          extraPackages = with pkgs; [
+            nvidiaPackages-l4t.tegra-lib
+          ];
+        };
 
         fileSystems = {
           "/" = {
