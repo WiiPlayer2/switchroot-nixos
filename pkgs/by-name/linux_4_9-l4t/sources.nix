@@ -3,11 +3,11 @@
 , runCommand
 }:
 let
-  kernel_rev = "6f926926d94a54aa6f9128234dd1a3833f6828d8";
-  devicetree_rev = "l4t/l4t-r32.6.1";
-  nx_rev = "cf785c4c176499b301170d79fe57b77f365b73cd";
-  nv_rev = "76e6d48970b451c242c20f298b8d63027836bb0b";
-  nvgpu_rev = "l4t/l4t-r32.6.1";
+  kernel_rev = "linux-dev";
+  devicetree_rev = "l4t/l4t-r32.5";
+  nx_rev = "linux-dev";
+  nv_rev = "linux-dev";
+  nvgpu_rev = "linux-3.4.0-r32.5";
 in rec {
   # https://github.com/theofficialgman/l4t-image-buildscripts
   # kernel sources
@@ -19,7 +19,7 @@ in rec {
   };
 
   switch-l4t-kernel-nvidia-src = fetchFromGitHub {
-    owner = "theofficialgman";
+    owner = "CTCaer";
     repo = "switch-l4t-kernel-nvidia";
     rev = nv_rev;
     hash = "sha256-BNES5wSGUUJo2s9tx6IfZLzn+tzFbUEd8XZm+pEdQuk=";
@@ -28,13 +28,13 @@ in rec {
   l4t-kernel-nvgpu-src = fetchFromGitLab {
     owner = "switchroot";
     repo = "kernel/l4t-kernel-nvgpu";
-    rev = nvgpu_rev; # r32.6.1
-    hash = "sha256-a/rZzYWIFQmg7hK7O778C2xRYhPuR2C8G3n/1IwSP6E=";
+    rev = nvgpu_rev;
+    hash = "sha256-SK/x/T2mMf9Kcz9rOXbyjPb84QqJf1QaD+lwSFQ+eq8=";
   };
 
   # device tree sources
   switchroot-platform-t210-nx-src = fetchFromGitHub {
-    owner = "theofficialgman";
+    owner = "CTCaer";
     repo = "switch-l4t-platform-t210-nx";
     rev = nx_rev;
     hash = "sha256-C2ShD5L111prt2GdoL7ZsScHav5Jmxhx5Ep2tMp/Tbc=";
@@ -51,7 +51,7 @@ in rec {
     owner = "switchroot";
     repo = "kernel/l4t-soc-tegra";
     rev = devicetree_rev;
-    hash = "sha256-17DsTlNnh7J+8pdiD7XdA5D1bNLBwhecql53dcajw2c=";
+    hash = "sha256-uXBk9Rfbhxc8fBEJukwrcH5xNcA0hlEzAMSW9wQ3NIY=";
   };
 
   l4t-platform-t210-common-src = fetchFromGitLab {
@@ -65,7 +65,7 @@ in rec {
     owner = "switchroot";
     repo = "kernel/l4t-platform-tegra-common";
     rev = devicetree_rev;
-    hash = "sha256-s/ozD1NY+QegUWHoFqhF6KwU+Sds3JS2XS+boHEYGhw=";
+    hash = "sha256-sEZ51GyLvtS8pYP3jxATZDCJ7mpUI02VL3zFeWN1w1M=";
   };
 
   combined-src = runCommand "combined-src" {} ''
