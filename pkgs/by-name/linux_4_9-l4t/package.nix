@@ -4,7 +4,7 @@
 , ...
 } @ args:
 let
-  sources = callPackage ../l4t-kernel/sources.nix {};
+  sources = callPackage ./sources.nix {};
   kernel = callPackage ./kernel.nix ({ inherit sources; } // args);
 in
   kernel

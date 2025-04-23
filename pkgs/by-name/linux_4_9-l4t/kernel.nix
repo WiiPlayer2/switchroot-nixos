@@ -7,9 +7,6 @@
 
 , ...
 } @ args:
-let
-  # buildLinux = callPackage ./buildLinux { inherit inputs; };
-in
 buildLinux (args // rec {
   version = "4.9.140-l4t";
   modDirVersion = version;
