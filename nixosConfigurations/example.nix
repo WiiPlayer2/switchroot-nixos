@@ -21,6 +21,7 @@ inputs.nixpkgs.lib.nixosSystem {
           nix-top
           nix-weather
           nvidiaPackages-l4t.tools
+          onboard
         ];
 
         users.users.root.initialPassword = "nixos";
@@ -47,9 +48,8 @@ inputs.nixpkgs.lib.nixosSystem {
             displayManager.lightdm = {
               enable = true;
               greeters = {
-                gtk.enable = true;
-                # tiny.enable = true;
-                # lomiri.enable = true;
+                gtk.enable = false;
+                slick.enable = true; # supports onboard
               };
               extraConfig = ''
                 logind-check-graphical=false
