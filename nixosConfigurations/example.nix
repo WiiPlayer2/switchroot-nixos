@@ -53,7 +53,7 @@ inputs.nixpkgs.lib.nixosSystem {
                 logind-check-graphical=false
               '';
             };
-            desktopManager.xfce.enable = true;
+            desktopManager.mate.enable = true;
             videoDrivers = [ "nvidia" ];
             drivers = [
               {
