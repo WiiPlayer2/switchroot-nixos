@@ -11,6 +11,9 @@ let
     inherit (sources) nvidia-drivers;
     inherit tegra-lib;
   };
+  tools = callPackage ./tools.nix {
+    inherit (sources) nv-tools;
+  };
 in
 {
   inherit
@@ -18,5 +21,6 @@ in
     x11-module
     tegra-firmware
     tegra-lib
+    tools
     ;
 }

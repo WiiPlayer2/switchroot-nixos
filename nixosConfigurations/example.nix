@@ -20,6 +20,7 @@ inputs.nixpkgs.lib.nixosSystem {
           btop
           nix-top
           nix-weather
+          nvidiaPackages-l4t.tools
         ];
 
         users.users.root.initialPassword = "nixos";
@@ -48,6 +49,7 @@ inputs.nixpkgs.lib.nixosSystem {
               greeters = {
                 gtk.enable = true;
                 # tiny.enable = true;
+                # lomiri.enable = true;
               };
               extraConfig = ''
                 logind-check-graphical=false
@@ -79,6 +81,7 @@ inputs.nixpkgs.lib.nixosSystem {
               # Option      "Monitor-DP-0" "Monitor1"
             '';
           };
+          displayManager.defaultSession = "mate";
         };
         boot.blacklistedKernelModules = [
           "nouveau"
