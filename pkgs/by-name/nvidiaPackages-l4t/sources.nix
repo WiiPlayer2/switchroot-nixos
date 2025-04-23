@@ -2,10 +2,10 @@
 , runCommand
 }:
 let
-  version = "32.6.1";
+  version = "32.5.2";
   driver-package = fetchzip {
-    url = "https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/t210/jetson-210_linux_r32.6.1_aarch64.tbz2";
-    hash = "sha256-r6CA+3kAT37Pxh0zPIy1q0G4pq1w+bmtmS2UC867RGk=";
+    url = "https://developer.nvidia.com/embedded/l4t/r32_release_v5.2/t210/jetson-210_linux_r32.5.2_aarch64.tbz2";
+    hash = "sha256-dQK9QbibjGgqXdLXqAkGsfK1reqvQIz9NHJEUnM5lFI=";
   };
   nvidia-drivers = runCommand "nvidia_drivers" {
     passthru.version = version;
