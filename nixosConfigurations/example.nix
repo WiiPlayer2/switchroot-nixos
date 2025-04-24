@@ -33,6 +33,7 @@ inputs.nixpkgs.lib.nixosSystem {
           isNormalUser = true;
           extraGroups = [
             "wheel"
+            "video"
           ];
         };
         services.openssh = {
@@ -85,6 +86,9 @@ inputs.nixpkgs.lib.nixosSystem {
             '';
           };
           displayManager.defaultSession = "mate";
+          udev.packages = with pkgs; [
+            nvidiaPackages-l4t.udev-rules
+          ];
         };
         boot.blacklistedKernelModules = [
           "nouveau"

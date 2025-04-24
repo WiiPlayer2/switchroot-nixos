@@ -14,6 +14,9 @@ let
   tools = callPackage ./tools.nix {
     inherit (sources) nv-tools;
   };
+  udev-rules = callPackage ./udev-rules.nix {
+    inherit (sources) config;
+  };
 in
 {
   inherit
@@ -22,5 +25,6 @@ in
     tegra-firmware
     tegra-lib
     tools
+    udev-rules
     ;
 }

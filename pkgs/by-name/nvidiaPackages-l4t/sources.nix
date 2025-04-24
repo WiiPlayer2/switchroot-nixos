@@ -15,12 +15,19 @@ let
     cd $out
     tar -xjf ${driver-package}/nv_tegra/nvidia_drivers.tbz2
   '';
-  nv-tools = runCommand "nvidia_drivers" {
+  nv-tools = runCommand "nvidia_tools" {
     passthru.version = version;
   } ''
     mkdir $out
     cd $out
     tar -xjf ${driver-package}/nv_tegra/nv_tools.tbz2
+  '';
+  config = runCommand "config" {
+    passthru.version = version;
+  } ''
+    mkdir $out
+    cd $out
+    tar -xjf ${driver-package}/nv_tegra/config.tbz2
   '';
 in
 {
@@ -28,5 +35,6 @@ in
     driver-package
     nvidia-drivers
     nv-tools
+    config
     ;
 }
