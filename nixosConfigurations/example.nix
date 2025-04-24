@@ -22,6 +22,9 @@ inputs.nixpkgs.lib.nixosSystem {
           nix-weather
           nvidiaPackages-l4t.tools
           onboard
+          mesa-demos
+          gdb
+          gpu-viewer
         ];
 
         users.users.root.initialPassword = "nixos";

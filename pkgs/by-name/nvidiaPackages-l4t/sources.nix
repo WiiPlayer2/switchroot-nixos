@@ -2,10 +2,11 @@
 , runCommand
 }:
 let
-  version = "32.5.2";
+  # https://developer.nvidia.com/embedded/l4t-3231-archive
+  version = "32.3.1";
   driver-package = fetchzip {
-    url = "https://developer.nvidia.com/embedded/l4t/r32_release_v5.2/t210/jetson-210_linux_r32.5.2_aarch64.tbz2";
-    hash = "sha256-dQK9QbibjGgqXdLXqAkGsfK1reqvQIz9NHJEUnM5lFI=";
+    url = "https://developer.nvidia.com/embedded/dlc/r32-3-1_Release_v1.0/t210ref_release_aarch64/Tegra210_Linux_R32.3.1_aarch64.tbz2";
+    hash = "sha256-UfPjgonDPMhxQMp/tlwo9NODIDd6rmXfwFJGNarQyMk=";
   };
   nvidia-drivers = runCommand "nvidia_drivers" {
     passthru.version = version;
