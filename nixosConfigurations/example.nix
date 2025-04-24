@@ -59,7 +59,7 @@ inputs.nixpkgs.lib.nixosSystem {
                 logind-check-graphical=false
               '';
             };
-            desktopManager.mate.enable = true;
+            desktopManager.cinnamon.enable = true;
             videoDrivers = [ "nvidia" ];
             drivers = [
               {
@@ -85,7 +85,7 @@ inputs.nixpkgs.lib.nixosSystem {
               # Option      "Monitor-DP-0" "Monitor1"
             '';
           };
-          displayManager.defaultSession = "mate";
+          displayManager.defaultSession = "cinnamon";
           udev.packages = with pkgs; [
             nvidiaPackages-l4t.udev-rules
           ];
