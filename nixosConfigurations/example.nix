@@ -25,6 +25,7 @@ inputs.nixpkgs.lib.nixosSystem {
           mesa-demos
           gdb
           gpu-viewer
+          lshw
         ];
 
         users.users.root.initialPassword = "nixos";
