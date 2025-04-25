@@ -1,4 +1,5 @@
 { callPackage
+, system
 , inputs
 
 , ...
@@ -6,6 +7,16 @@
 let
   sources = callPackage ./sources.nix {};
   kernel = callPackage ./kernel.nix ({ inherit sources; } // args);
+  kernelCross =
+    let
+      pkgsCross = import inputs.nixpkgs {
+          localSystem = "x86_64-linux";
+          crossSystem = system;
+      };
+    in
+      pkgsCross.callPackage ./kernel.nix ({ inherit sources; } // args);
 in
-  kernel
+  kernel // {
+    cross-compiled = kernelCross;
+  }
   # sources.combined-src

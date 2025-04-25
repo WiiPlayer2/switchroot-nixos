@@ -99,9 +99,9 @@ inputs.nixpkgs.lib.nixosSystem {
           "nvgpu"
         ];
 
-        boot.kernelPackages = pkgs.linuxPackages_4_9-l4t;
+        boot.kernelPackages = pkgs.linuxPackages_4_9-l4t.cross-compiled;
         hardware.firmware = with pkgs; [
-          linuxPackages_4_9-l4t.kernel
+          config.boot.kernelPackages.kernel
           nvidiaPackages-l4t.tegra-firmware
         ];
         hardware.enableRedistributableFirmware = true;
