@@ -1,6 +1,7 @@
 inputs:
 inputs.nixpkgs.lib.nixosSystem {
   modules = [
+    inputs.self.nixosModules.switchroot-nixos
     (
       { lib, pkgs, config, ... }:
       let

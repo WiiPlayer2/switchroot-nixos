@@ -17,6 +17,7 @@
     packages = import ./pkgs inputs;
     overlays = import ./overlays inputs;
     nixosConfigurations = import ./nixosConfigurations inputs;
+    nixosModules = import ./nixosModules inputs;
 
     deploy.nodes.default = {
       hostname = "nintendo-switch";
