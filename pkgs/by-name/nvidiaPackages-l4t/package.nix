@@ -17,6 +17,9 @@ let
   udev-rules = callPackage ./udev-rules.nix {
     inherit (sources) config;
   };
+  alsa-config = callPackage ./alsa-config.nix {
+    inherit (sources) config;
+  };
 in
 {
   inherit
@@ -26,5 +29,6 @@ in
     tegra-lib
     tools
     udev-rules
+    alsa-config
     ;
 }

@@ -57,6 +57,10 @@ buildLinux (args // rec {
     SND_SOC_TEGRA_T210REF_P2382_ALT = no;
     TEGRA_BOOTLOADER_BOOT_CFG = no;
     TEGRA_HOST1X = no;
+
+    SND_SOC_TEGRA210_IQC_ALT = yes;
+    # SND_SOC_TEGRA210_ADSP_ALT = no;
+    SND_SOC_TEGRA_T186REF_ALT = no;
   };
   kernelPatches = [
     {

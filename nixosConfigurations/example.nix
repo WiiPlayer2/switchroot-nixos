@@ -26,6 +26,71 @@ inputs.nixpkgs.lib.nixosSystem {
           gdb
           gpu-viewer
           lshw
+          nvidiaPackages-l4t.alsa-config
+          alsa-utils
+          ffmpeg-full
+          nvidiaPackages-l4t.sources.config
+          difftastic
+
+          (writeShellScriptBin "set-alsa-config" ''
+            # RT565x playback setup
+            amixer -c1 cset name="x Headphone Playback Volume" "31,31"
+            amixer -c1 cset name="x Stereo DAC MIXR DAC R1 Switch" "on"
+            amixer -c1 cset name="x Stereo DAC MIXL DAC L1 Switch" "on"
+            amixer -c1 cset name="x HPO R Playback Switch" "on"
+            amixer -c1 cset name="x HPO L Playback Switch" "on"
+            amixer -c1 cset name="x DAC1 Playback Volume" "175,175"
+            amixer -c1 cset name="x DAC1 Speaker Playback Volume" "175,175"
+            amixer -c1 cset name="x DAC1 Playback Switch" "on"
+            amixer -c1 cset name="x DAC1 MIXR DAC1 Switch" "on"
+            amixer -c1 cset name="x DAC1 MIXL DAC1 Switch" "on"
+
+            # RT565x capture setup
+            amixer -c1 cset name="x RECMIX1L BST1 Switch" "on"
+            amixer -c1 cset name="x RECMIX1R BST1 Switch" "on"
+            amixer -c1 cset name="x Stereo1 ADC Source" "ADC1"
+            amixer -c1 cset name="x Stereo1 ADC1 Source" "ADC"
+            amixer -c1 cset name="x Stereo1 ADC MIXL ADC1 Switch" "on"
+            amixer -c1 cset name="x Stereo1 ADC MIXR ADC1 Switch" "on"
+            amixer -c1 cset name="x TDM Data Mux" "AD1:AD2:DAC:NUL"
+            amixer -c1 cset name="x IN1 Boost Volume" "43"
+            echo "Initialised RT565x codec with prefix 'x'"
+
+            # RT565x playback setup
+            amixer -c1 cset name="y Headphone Playback Volume" "31,31"
+            amixer -c1 cset name="y Stereo DAC MIXR DAC R1 Switch" "on"
+            amixer -c1 cset name="y Stereo DAC MIXL DAC L1 Switch" "on"
+            amixer -c1 cset name="y HPO R Playback Switch" "on"
+            amixer -c1 cset name="y HPO L Playback Switch" "on"
+            amixer -c1 cset name="y DAC1 Playback Volume" "175,175"
+            amixer -c1 cset name="y DAC1 Playback Switch" "on"
+            amixer -c1 cset name="y DAC1 MIXR DAC1 Switch" "on"
+            amixer -c1 cset name="y DAC1 MIXL DAC1 Switch" "on"
+
+            # RT565x capture setup
+            amixer -c1 cset name="y RECMIX1L BST1 Switch" "on"
+            amixer -c1 cset name="y RECMIX1R BST1 Switch" "on"
+            amixer -c1 cset name="y Stereo1 ADC Source" "ADC1"
+            amixer -c1 cset name="y Stereo1 ADC1 Source" "ADC"
+            amixer -c1 cset name="y Stereo1 ADC MIXL ADC1 Switch" "on"
+            amixer -c1 cset name="y Stereo1 ADC MIXR ADC1 Switch" "on"
+            amixer -c1 cset name="y TDM Data Mux" "AD1:AD2:DAC:NUL"
+            amixer -c1 cset name="y IN1 Boost Volume" "43"
+            echo "Initialised RT565x codec with prefix 'y'"
+
+            amixer -c1 cset name="I2S1 Sample Rate" 48000
+            amixer -c1 cset name="x SPK MIXL DAC L1 Switch" on
+            amixer -c1 cset name="x SPK MIXR DAC R1 Switch" on
+            amixer -c1 cset name="x SPOL MIX SPKVOL L Switch" on
+            amixer -c1 cset name="x SPOR MIX SPKVOL R Switch" on
+            amixer -c1 cset name="x Speaker Channel Switch" on,on
+            amixer -c1 cset name="x Speaker L Playback Switch" on
+            amixer -c1 cset name="x Speaker R Playback Switch" on
+            amixer -c1 cset name="x Stereo DAC MIXL DAC L1 Switch" on
+            amixer -c1 cset name="x Stereo DAC MIXR DAC R1 Switch" on
+            amixer -c1 cset name="I2S1 Mux" 1
+            amixer -c1 cset name="ADMAIF1 Mux" 11
+          '')
         ];
 
         users.users.root.initialPassword = "nixos";
@@ -35,6 +100,7 @@ inputs.nixpkgs.lib.nixosSystem {
           extraGroups = [
             "wheel"
             "video"
+            "audio"
           ];
         };
         services.openssh = {
@@ -116,6 +182,48 @@ inputs.nixpkgs.lib.nixosSystem {
             nvidiaPackages-l4t.tegra-lib
           ];
         };
+        services.pipewire = {
+          # package = pkgs.pipewire-with-tegra;
+          wireplumber = {
+            extraConfig = {
+              "log-level-debug" = {
+                "context.properties" = {
+                  # Output Debug log messages as opposed to only the default level (Notice)
+                  "log.level" = "D";
+                };
+              };
+              tegra-nx = {
+                "monitor.alsa.rules" = [
+                  {
+                    matches = [
+                      { "device.nick" = "tegra-snd-t210ref-mobile-rt565x"; }
+                    ];
+                    actions = {
+                      update-props = {
+                        "audio.format" = "S16LE";
+                        "audio.rate" = 48000;
+                      };
+                    };
+                  }
+                ];
+              };
+            };
+          };
+        };
+        environment.etc = {
+          "alsa/conf.d/99-tegra.conf".text = ''
+            <confdir:pcm/front.conf>
+
+            pcm.front {
+              @args [ CARD ]
+              @args.CARD {
+                type string
+              }
+              type hw
+              card $CARD
+            }
+          '';
+        };
 
         fileSystems = {
           "/" = {
@@ -125,6 +233,7 @@ inputs.nixpkgs.lib.nixosSystem {
           "/boot" = {
             device = "/dev/mmcblk0p1";
             fsType = "vfat";
+            noCheck = true;
           };
         };
 
