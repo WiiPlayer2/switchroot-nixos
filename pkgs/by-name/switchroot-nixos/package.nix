@@ -1,11 +1,12 @@
-{ callPackage
-, runCommand
-, writeShellApplication
-, closureInfo
-, inputs
+{
+  callPackage,
+  runCommand,
+  writeShellApplication,
+  closureInfo,
+  inputs,
 
-, rsync
-, openssh
+  rsync,
+  openssh,
 }:
 {
   kernel,
@@ -50,28 +51,40 @@ let
     '';
   };
 
-  switchroot-boot = runCommand "switchroot-boot" {
-    passthru = {
-      inherit icon uInitrd uImage boot-scr dtb-image;
-    };
-  } ''
-    mkdir -p $out
+  switchroot-boot =
+    runCommand "switchroot-boot"
+      {
+        passthru = {
+          inherit
+            icon
+            uInitrd
+            uImage
+            boot-scr
+            dtb-image
+            ;
+        };
+      }
+      ''
+        mkdir -p $out
 
-    cp ${icon} $out/icon.bmp
-    cp ${uInitrd} $out/initramfs
-    cp ${uImage} $out/uImage
-    cp ${boot-scr} $out/boot.scr
-    cp ${dtb-image} $out/nx-plat.dtimg
-  '';
+        cp ${icon} $out/icon.bmp
+        cp ${uInitrd} $out/initramfs
+        cp ${uImage} $out/uImage
+        cp ${boot-scr} $out/boot.scr
+        cp ${dtb-image} $out/nx-plat.dtimg
+      '';
 
-  package = runCommand "switchroot-pkg" {
-    passthru.boot = switchroot-boot;
-  } ''
-    mkdir -p $out/{misc,switchroot}
-    ln -s ${closure-info} $out/misc/closure-info
-    ln -s ${copy-closure}/bin/copy-closure-to $out/misc/
-    ln -s ${copy-via-ssh}/bin/copy-via-ssh $out/misc/
-    ln -s ${switchroot-boot} $out/switchroot/nixos
-  '';
+  package =
+    runCommand "switchroot-pkg"
+      {
+        passthru.boot = switchroot-boot;
+      }
+      ''
+        mkdir -p $out/{misc,switchroot}
+        ln -s ${closure-info} $out/misc/closure-info
+        ln -s ${copy-closure}/bin/copy-closure-to $out/misc/
+        ln -s ${copy-via-ssh}/bin/copy-via-ssh $out/misc/
+        ln -s ${switchroot-boot} $out/switchroot/nixos
+      '';
 in
-  package
+package

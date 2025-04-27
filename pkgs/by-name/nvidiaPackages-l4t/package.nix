@@ -1,6 +1,6 @@
 { callPackage }:
 let
-  sources = callPackage ./sources.nix {};
+  sources = callPackage ./sources.nix { };
   tegra-lib = callPackage ./tegra-lib.nix {
     inherit (sources) nvidia-drivers;
   };

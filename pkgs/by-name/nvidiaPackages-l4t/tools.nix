@@ -1,6 +1,7 @@
-{ nv-tools
-, stdenv
-, autoPatchelfHook
+{
+  nv-tools,
+  stdenv,
+  autoPatchelfHook,
 }:
 stdenv.mkDerivation {
   name = "nvidia-l4t-tools";

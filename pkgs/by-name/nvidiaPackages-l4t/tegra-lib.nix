@@ -1,19 +1,20 @@
-{ nvidia-drivers
-, runCommand
-, writers
-, stdenv
-, autoPatchelfHook
-, libgcc
-, libglvnd
-, glib
-, alsa-lib
-, cairo
-, pango
-, gtk3
-, libv4l
-, gst_all_1
-, wayland-scanner
-, egl-wayland
+{
+  nvidia-drivers,
+  runCommand,
+  writers,
+  stdenv,
+  autoPatchelfHook,
+  libgcc,
+  libglvnd,
+  glib,
+  alsa-lib,
+  cairo,
+  pango,
+  gtk3,
+  libv4l,
+  gst_all_1,
+  wayland-scanner,
+  egl-wayland,
 }:
 let
   library-files = stdenv.mkDerivation {
@@ -71,11 +72,11 @@ let
       library_path = "${library-files}/lib/libEGL_nvidia.so.0";
     };
   };
-  combined-files = runCommand "nvidia-l4t-tegra-lib-${nvidia-drivers.version}" {} ''
+  combined-files = runCommand "nvidia-l4t-tegra-lib-${nvidia-drivers.version}" { } ''
     mkdir -p $out/share/{glvnd/egl_vendor.d,vulkan/icd.d}
     ln -s ${library-files}/lib $out/
     ln -s ${nvidia-json} $out/share/glvnd/egl_vendor.d/nvidia.json
     ln -s ${nvidia-icd-json} $out/share/vulkan/icd.d/nvidia_icd.json
   '';
 in
-  combined-files
+combined-files

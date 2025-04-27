@@ -1,4 +1,4 @@
-{ nixpkgs, ... } @ inputs:
+{ nixpkgs, ... }@inputs:
 let
   supportedSystems = [
     "aarch64-linux"
@@ -10,7 +10,8 @@ let
     packagesFromDirectoryRecursive
     callPackageWith
     ;
-  pkgsForSystem = system:
+  pkgsForSystem =
+    system:
     let
       pkgs = import nixpkgs {
         # inherit system;
@@ -25,16 +26,12 @@ let
         directory = ./by-name;
       };
     in
-      localPkgs;
-  pkgsSets =
-    listToAttrs
-    (
-      map
-      (system: {
-        name = system;
-        value = pkgsForSystem system;
-      })
-      supportedSystems
-    );
+    localPkgs;
+  pkgsSets = listToAttrs (
+    map (system: {
+      name = system;
+      value = pkgsForSystem system;
+    }) supportedSystems
+  );
 in
-  pkgsSets
+pkgsSets

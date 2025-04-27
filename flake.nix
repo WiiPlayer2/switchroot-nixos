@@ -13,18 +13,26 @@
     };
   };
 
-  outputs = { self, deploy-rs, ... } @ inputs: {
-    packages = import ./pkgs inputs;
-    overlays = import ./overlays inputs;
-    nixosConfigurations = import ./nixosConfigurations inputs;
-    nixosModules = import ./nixosModules inputs;
+  outputs =
+    {
+      self,
+      deploy-rs,
+      nixpkgs,
+      ...
+    }@inputs:
+    {
+      packages = import ./pkgs inputs;
+      overlays = import ./overlays inputs;
+      nixosConfigurations = import ./nixosConfigurations inputs;
+      nixosModules = import ./nixosModules inputs;
 
-    deploy.nodes.default = {
-      hostname = "nintendo-switch";
-      profiles.system = {
-        sshUser = "root";
-        path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.example;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      deploy.nodes.default = {
+        hostname = "nintendo-switch";
+        profiles.system = {
+          sshUser = "root";
+          path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.example;
+        };
       };
     };
-  };
 }

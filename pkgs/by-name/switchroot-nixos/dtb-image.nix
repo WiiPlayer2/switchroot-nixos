@@ -1,8 +1,9 @@
-{ kernel
-, runCommand
-, android-tools
+{
+  kernel,
+  runCommand,
+  android-tools,
 }:
-runCommand "nx-plat.dtimg" {} ''
+runCommand "nx-plat.dtimg" { } ''
   ${android-tools}/bin/mkdtboimg create $out --page_size=1000 \
     ${kernel}/dtbs/tegra210-odin.dtb --id=0x4F44494E \
     ${kernel}/dtbs/tegra210b01-odin.dtb --id=0x4F44494E --rev=0xb01 \

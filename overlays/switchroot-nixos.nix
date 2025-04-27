@@ -1,5 +1,4 @@
-inputs:
-final: prev:
+inputs: final: prev:
 let
   callPackage' = prev.lib.callPackageWith (final // { inherit inputs; });
   alsa-lib = prev.alsa-lib.overrideAttrs (prev': {
@@ -14,7 +13,8 @@ in
 prev.lib.packagesFromDirectoryRecursive {
   callPackage = callPackage';
   directory = ../pkgs/by-name;
-} // {
+}
+// {
   # alsa-lib = prev.alsa-lib.overrideAttrs (prev': {
   #   pname = "${prev'.pname}-with-tegra";
   #   postInstall = ''
@@ -25,4 +25,3 @@ prev.lib.packagesFromDirectoryRecursive {
   # });
   pipewire-with-tegra = prev.pipewire.override { inherit alsa-lib; };
 }
-

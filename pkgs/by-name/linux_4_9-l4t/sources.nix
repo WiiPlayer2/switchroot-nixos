@@ -1,6 +1,7 @@
-{ fetchFromGitHub
-, fetchFromGitLab
-, runCommand
+{
+  fetchFromGitHub,
+  fetchFromGitLab,
+  runCommand,
 }:
 let
   kernel_rev = "linux-dev";
@@ -8,7 +9,8 @@ let
   nx_rev = "linux-dev";
   nv_rev = "linux-dev";
   nvgpu_rev = "linux-3.4.0-r32.5";
-in rec {
+in
+rec {
   # https://github.com/theofficialgman/l4t-image-buildscripts
   # kernel sources
   switch-l4t-kernel-4_9-src = fetchFromGitHub {
@@ -68,7 +70,7 @@ in rec {
     hash = "sha256-sEZ51GyLvtS8pYP3jxATZDCJ7mpUI02VL3zFeWN1w1M=";
   };
 
-  combined-src = runCommand "combined-src" {} ''
+  combined-src = runCommand "combined-src" { } ''
     mkdir -p $out/kernel
     cp --no-preserve=mode -r ${switch-l4t-kernel-4_9-src}/* $out/kernel/
     sed -i 's/\/bin\/pwd/pwd/' $out/kernel/Makefile

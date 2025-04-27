@@ -1,9 +1,10 @@
-{ toplevel
+{
+  toplevel,
 
-, writeTextFile
-, runCommand
-, writeShellApplication
-, ubootTools
+  writeTextFile,
+  runCommand,
+  writeShellApplication,
+  ubootTools,
 }:
 let
   boot-cmd-main = writeTextFile {
@@ -430,10 +431,13 @@ let
       mkimage -A arm64 -C none -T script -d "$boot_scr" "$OUT"
     '';
   };
-  boot-scr = runCommand "boot.scr" {
-    passthru.buildScript = build-boot-scr;
-  } ''
-    ${build-boot-scr}/bin/build-boot-scr ${toplevel} $out
-  '';
+  boot-scr =
+    runCommand "boot.scr"
+      {
+        passthru.buildScript = build-boot-scr;
+      }
+      ''
+        ${build-boot-scr}/bin/build-boot-scr ${toplevel} $out
+      '';
 in
-  boot-scr
+boot-scr

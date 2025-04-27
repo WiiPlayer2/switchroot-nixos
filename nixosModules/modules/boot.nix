@@ -13,7 +13,8 @@
     enable = true;
     installHook =
       let
-        switchroot-boot = (pkgs.switchroot-nixos {
+        switchroot-boot =
+          (pkgs.switchroot-nixos {
             inherit (config.system.build) kernel initialRamdisk toplevel;
           }).boot;
         installApplication = pkgs.writeShellApplication {
@@ -27,7 +28,7 @@
           '';
         };
       in
-        pkgs.lib.getExe installApplication;
+      pkgs.lib.getExe installApplication;
   };
   system.build.switchrootImage = pkgs.switchroot-nixos {
     inherit (config.system.build) kernel initialRamdisk toplevel;

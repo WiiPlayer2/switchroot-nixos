@@ -1,7 +1,8 @@
-{ nvidia-drivers
-, runCommand
+{
+  nvidia-drivers,
+  runCommand,
 }:
-runCommand "nvidia-l4t-tegra-firmware" {} ''
+runCommand "nvidia-l4t-tegra-firmware" { } ''
   mkdir -p $out
   cp --no-preserve=mode -r ${nvidia-drivers}/lib $out/
   cd $out/lib/firmware/gm20b

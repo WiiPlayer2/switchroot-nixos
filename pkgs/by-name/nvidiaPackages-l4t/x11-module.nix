@@ -1,10 +1,11 @@
-{ nvidia-drivers
-, runCommand
+{
+  nvidia-drivers,
+  runCommand,
 
-, tegra-lib
-, iconv
+  tegra-lib,
+  iconv,
 }:
-runCommand "nvidia-l4t-x11-module" {} ''
+runCommand "nvidia-l4t-x11-module" { } ''
   mkdir -p $out/lib
   cp --no-preserve=mode -r ${nvidia-drivers}/usr/lib/xorg $out/lib
   patchelf \

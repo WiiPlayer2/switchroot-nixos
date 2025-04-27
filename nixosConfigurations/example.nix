@@ -3,17 +3,24 @@ inputs.nixpkgs.lib.nixosSystem {
   modules = [
     inputs.self.nixosModules.switchroot-nixos
     (
-      { lib, pkgs, config, ... }:
+      {
+        lib,
+        pkgs,
+        config,
+        ...
+      }:
       {
         nixpkgs = {
           # buildPlatform = system;
           # buildPlatform = "x86_64-linux"; # TODO: for now only cross compilation
           # hostPlatform = "aarch64-linux";
           system = "aarch64-linux";
-          config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-            "nvidia-x11"
-            "nvidia-settings"
-          ];
+          config.allowUnfreePredicate =
+            pkg:
+            builtins.elem (lib.getName pkg) [
+              "nvidia-x11"
+              "nvidia-settings"
+            ];
         };
 
         environment.systemPackages = with pkgs; [
