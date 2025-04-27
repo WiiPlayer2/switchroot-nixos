@@ -67,14 +67,6 @@ inputs.nixpkgs.lib.nixosSystem {
           displayManager.defaultSession = "cinnamon";
         };
 
-        boot.kernelPackages = pkgs.linuxPackages_4_9-l4t.cross-compiled;
-        hardware.firmware = with pkgs; [
-          config.boot.kernelPackages.kernel
-          nvidiaPackages-l4t.tegra-firmware
-        ];
-        hardware.enableRedistributableFirmware = true;
-        hardware.bluetooth.enable = true;
-
         fileSystems = {
           "/" = {
             device = "/dev/disk/by-label/SWR-NIXOS";

@@ -3,6 +3,8 @@ inputs:
   imports = [
     ./modules/boot.nix
     ./modules/graphics.nix
+    ./modules/hardware.nix
+    ./modules/kernel.nix
     ./modules/sound.nix
   ];
 
