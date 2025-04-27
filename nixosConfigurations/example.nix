@@ -37,6 +37,7 @@ inputs.nixpkgs.lib.nixosSystem {
           alsa-utils
           ffmpeg-full
           difftastic
+          file
         ];
 
         users.users.root.initialPassword = "nixos";
