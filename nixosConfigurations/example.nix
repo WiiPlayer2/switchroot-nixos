@@ -9,6 +9,20 @@ inputs.nixpkgs.lib.nixosSystem {
         config,
         ...
       }:
+      let
+        pkgsX64 = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          overlays = [
+            (final: prev: {
+              bubblewrap = pkgs.bubblewrap;
+            })
+          ];
+          config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+            "steam"
+            "steam-unwrapped"
+          ];
+        };
+      in
       {
         nixpkgs = {
           # buildPlatform = system;
@@ -38,6 +52,15 @@ inputs.nixpkgs.lib.nixosSystem {
           ffmpeg-full
           difftastic
           file
+          box64
+          pkgsX64.lutris
+          pkgsX64.bottles
+          pkgsX64.steam-run
+        ];
+
+        boot.binfmt.emulatedSystems = [
+          "i386-linux"
+          "x86_64-linux"
         ];
 
         users.users.root.initialPassword = "nixos";
