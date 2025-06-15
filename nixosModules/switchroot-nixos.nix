@@ -10,4 +10,8 @@ inputs: {
   nixpkgs.overlays = [
     inputs.self.overlays.switchroot-nixos
   ];
+
+  environment.systemPackages = with pkgs; [
+    nvidiaPackages-l4t.tools
+  ];
 }
