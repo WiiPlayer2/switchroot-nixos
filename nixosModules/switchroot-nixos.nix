@@ -1,4 +1,6 @@
-inputs: {
+inputs:
+{ pkgs, ... }:
+{
   imports = [
     ./modules/boot.nix
     ./modules/graphics.nix
