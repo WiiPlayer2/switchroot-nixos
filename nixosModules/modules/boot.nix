@@ -19,12 +19,16 @@
           }).boot;
         installApplication = pkgs.writeShellApplication {
           name = "install-boot-config";
+          runtimeInputs = with pkgs; [
+            uutils-coreutils-noprefix
+            switchroot-boot.boot-scr.buildScript
+          ];
           text = ''
             TOPLEVEL="$1"
             cp -v ${switchroot-boot.uImage} /boot/switchroot/nixos/uImage
             cp -v ${switchroot-boot.uInitrd} /boot/switchroot/nixos/initramfs
             cp -v ${switchroot-boot.dtb-image} /boot/switchroot/nixos/nx-plat.dtimg
-            ${switchroot-boot.boot-scr.buildScript}/bin/build-boot-scr "$TOPLEVEL" /boot/switchroot/nixos/boot.scr
+            build-boot-scr "$TOPLEVEL" /boot/switchroot/nixos/boot.scr
           '';
         };
       in
