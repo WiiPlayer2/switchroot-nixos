@@ -20,6 +20,7 @@ let
   alsa-config = callPackage ./alsa-config.nix {
     inherit (sources) config;
   };
+  nvpmodel-profiles = callPackage ./nvpmodel-profiles { };
 in
 {
   inherit
