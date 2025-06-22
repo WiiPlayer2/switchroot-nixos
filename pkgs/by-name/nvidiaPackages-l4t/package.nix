@@ -31,5 +31,6 @@ in
     tools
     udev-rules
     alsa-config
+    nvpmodel-profiles
     ;
 }
