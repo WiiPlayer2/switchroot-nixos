@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs-pinned.url = "github:nixos/nixpkgs?ref=1242ee333dd7063e6d57ee1996a2e0504a28de16"; # systemd: 257.9
     nixos-artwork = {
       url = "github:nixos/nixos-artwork";
       flake = false;

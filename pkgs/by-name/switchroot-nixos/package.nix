@@ -34,7 +34,7 @@ let
       # shellcheck disable=SC2046
       sudo rsync -au --info=progress2 $(cat ${closure-info}/store-paths) "$TARGET/nix/store"
       sudo cp ${closure-info}/registration "$TARGET/copy-closure-registration"
-      sudo nixos-enter --root "$TARGET" --command "nix-store --load-db /copy-closure-registration"
+      sudo nixos-enter --root "$TARGET" --command "nix-store --load-db < /copy-closure-registration"
       sudo rm "$TARGET/copy-closure-registration"
     '';
   };

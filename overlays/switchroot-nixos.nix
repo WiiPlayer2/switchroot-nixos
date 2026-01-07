@@ -9,6 +9,7 @@ let
       ln -s ${final.nvidiaPackages-l4t.alsa-config}/share/alsa/init $out/share/alsa/
     '';
   });
+  pinnedPkgs = inputs.nixpkgs-pinned.legacyPackages.${prev.stdenv.hostPlatform.system};
 in
 prev.lib.packagesFromDirectoryRecursive {
   callPackage = callPackage';
@@ -24,4 +25,6 @@ prev.lib.packagesFromDirectoryRecursive {
   #   '';
   # });
   pipewire-with-tegra = prev.pipewire.override { inherit alsa-lib; };
+
+  inherit (pinnedPkgs) systemd systemdMinimal systemdLibs systemdUkify;
 }
