@@ -26,5 +26,7 @@ prev.lib.packagesFromDirectoryRecursive {
   # });
   pipewire-with-tegra = prev.pipewire.override { inherit alsa-lib; };
 
-  inherit (pinnedPkgs) systemd systemdMinimal systemdLibs systemdUkify;
+  systemd = prev.systemd.overrideAttrs (finalAttrs: prevAttrs: {
+    inherit (pinnedPkgs.systemd) version src;
+  });
 }

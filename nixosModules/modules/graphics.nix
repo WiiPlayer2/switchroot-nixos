@@ -1,6 +1,11 @@
-{ pkgs, ... }:
+{ lib, config, pkgs, ... }:
+with lib;
 {
-  services = {
+  # this needs to be guarded (and possible also fixed) due
+  # to the "graphics-drivers" derivation requiring nvidia-x11
+  # which is marked as unfree.
+  # the allow unfree predicate apparently doesn't help in this case.
+  services = mkIf (config.services.xserver.enable) {
     xserver = {
       displayManager.lightdm.extraConfig = ''
         logind-check-graphical=false
@@ -44,7 +49,7 @@
   ];
   # hardware.nvidia.enabled = true;
   hardware.nvidia.open = false;
-  hardware.nvidia.package = null;
+  # hardware.nvidia.package = null;
   nixpkgs.config.nvidia.acceptLicense = true;
   hardware.graphics = {
     enable = true;
@@ -52,6 +57,7 @@
       nvidiaPackages-l4t.tegra-lib
     ];
   };
+  boot.initrd.systemd.enable = false; # TODO: migrate to systemd stage 1
   boot.initrd.postDeviceCommands = ''
     echo 0 > /sys/class/graphics/fb0/state
   '';
