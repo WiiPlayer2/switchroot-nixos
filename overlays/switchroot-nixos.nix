@@ -48,8 +48,18 @@ prev.lib.packagesFromDirectoryRecursive {
     withNspawn = true;
   };
   systemdMinimal = systemdOverride {
-    pkgFn = x: x.systemd;
+    pkgFn = x: x.systemdMinimal;
     withLogind = false;
     withNspawn = false;
+  };
+  systemdLibs = systemdOverride {
+    pkgFn = x: x.systemdLibs;
+    withLogind = false;
+    withNspawn = false;
+  };
+  systemdUkify = systemdOverride {
+    pkgFn = x: x.systemdUkify;
+    withLogind = true;
+    withNspawn = true;
   };
 }
