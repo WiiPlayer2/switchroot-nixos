@@ -10,6 +10,22 @@ let
     '';
   });
   pinnedPkgs = inputs.nixpkgs-pinned.legacyPackages.${prev.stdenv.hostPlatform.system};
+
+  systemdOverride =
+    {
+      pkgFn,
+      withLogind,
+      withNspawn,
+    }:
+    let
+      pinnedPkg = pkgFn pinnedPkgs;
+      prevPkg = pkgFn prev;
+    in
+    pinnedPkg.overrideAttrs (finalAttrs: prevAttrs: {
+      passthru = prevAttrs.passthru // {
+        inherit withLogind withNspawn;
+      };
+    });
 in
 prev.lib.packagesFromDirectoryRecursive {
   callPackage = callPackage';
@@ -26,7 +42,14 @@ prev.lib.packagesFromDirectoryRecursive {
   # });
   pipewire-with-tegra = prev.pipewire.override { inherit alsa-lib; };
 
-  systemd = prev.systemd.overrideAttrs (finalAttrs: prevAttrs: {
-    inherit (pinnedPkgs.systemd) version src;
-  });
+  systemd = systemdOverride {
+    pkgFn = x: x.systemd;
+    withLogind = true;
+    withNspawn = true;
+  };
+  systemdMinimal = systemdOverride {
+    pkgFn = x: x.systemd;
+    withLogind = false;
+    withNspawn = false;
+  };
 }
