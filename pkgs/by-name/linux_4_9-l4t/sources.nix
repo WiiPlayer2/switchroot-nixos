@@ -4,11 +4,12 @@
   runCommand,
 }:
 let
-  kernel_rev = "linux-dev";
-  devicetree_rev = "l4t/l4t-r32.5";
-  nx_rev = "linux-dev";
-  nv_rev = "linux-dev";
-  nvgpu_rev = "linux-3.4.0-r32.5";
+  # TODO: maybe use flake inputs or other mechanism to allow automatic updates
+  kernel_rev = "604bd4ccc0020c0f509d8307a6401bec66ea81e4"; # linux-dev
+  devicetree_rev = "l4t/l4t-r32.5"; # l4t/l4t-r32.5
+  nx_rev = "cf785c4c176499b301170d79fe57b77f365b73cd"; # linux-dev
+  nv_rev = "76e6d48970b451c242c20f298b8d63027836bb0b"; # linux-dev
+  nvgpu_rev = "linux-3.4.0-r32.5"; # inux-3.4.0-r32.5
 in
 rec {
   # https://github.com/theofficialgman/l4t-image-buildscripts
@@ -17,7 +18,7 @@ rec {
     owner = "theofficialgman";
     repo = "switch-l4t-kernel-4.9";
     rev = kernel_rev;
-    hash = "sha256-usEQGVq4HW4cRQpwSmq4VZeAzthuVaLgYjL38W2iafM=";
+    hash = "sha256-srQLDXy3dbs1wZzI0f9gbcZLCCM7kZ0bjJHP/OvRp34=";
   };
 
   switch-l4t-kernel-nvidia-src = fetchFromGitHub {
