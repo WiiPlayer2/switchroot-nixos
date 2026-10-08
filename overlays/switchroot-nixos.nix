@@ -14,18 +14,27 @@ let
   systemdOverride =
     {
       pkgFn,
-      withLogind,
-      withNspawn,
+      passthru,
     }:
     let
       pinnedPkg = pkgFn pinnedPkgs;
       prevPkg = pkgFn prev;
     in
     pinnedPkg.overrideAttrs (finalAttrs: prevAttrs: {
-      passthru = prevAttrs.passthru // {
-        inherit withLogind withNspawn;
-      };
+      passthru = prevAttrs.passthru // passthru;
     });
+
+  passthruTrue = {
+    withLogind = true;
+    withNspawn = true;
+    withRepart = true;
+  };
+
+  passthruFalse = {
+    withLogind = false;
+    withNspawn = false;
+    withRepart = false;
+  };
 in
 prev.lib.packagesFromDirectoryRecursive {
   callPackage = callPackage';
@@ -44,22 +53,18 @@ prev.lib.packagesFromDirectoryRecursive {
 
   systemd = systemdOverride {
     pkgFn = x: x.systemd;
-    withLogind = true;
-    withNspawn = true;
+    passthru = passthruTrue;
   };
   systemdMinimal = systemdOverride {
     pkgFn = x: x.systemdMinimal;
-    withLogind = false;
-    withNspawn = false;
+    passthru = passthruFalse;
   };
   systemdLibs = systemdOverride {
     pkgFn = x: x.systemdLibs;
-    withLogind = false;
-    withNspawn = false;
+    passthru = passthruFalse;
   };
   systemdUkify = systemdOverride {
     pkgFn = x: x.systemdUkify;
-    withLogind = true;
-    withNspawn = true;
+    passthru = passthruTrue;
   };
 }
