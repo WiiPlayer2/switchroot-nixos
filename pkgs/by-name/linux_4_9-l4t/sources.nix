@@ -71,7 +71,11 @@ rec {
     hash = "sha256-sEZ51GyLvtS8pYP3jxATZDCJ7mpUI02VL3zFeWN1w1M=";
   };
 
-  combined-src = runCommand "combined-src" { } ''
+  combined-src = runCommand "combined-src" {
+    passthru = {
+      kernel = kernel-src;
+    };
+  } ''
     mkdir -p $out/kernel
     cp --no-preserve=mode -r ${switch-l4t-kernel-4_9-src}/* $out/kernel/
     sed -i 's/\/bin\/pwd/pwd/' $out/kernel/Makefile
@@ -111,5 +115,12 @@ rec {
     mkdir -p $out/kernel/nvidia/nvgpu
     cp --no-preserve=mode -r ${switch-l4t-kernel-nvidia-src}/* $out/kernel/nvidia/
     cp --no-preserve=mode -r ${l4t-kernel-nvgpu-src}/* $out/kernel/nvidia/nvgpu/
+  '';
+
+  kernel-src = runCommand "kernel-src" {
+    passthru.combined = combined-src;
+  } ''
+    mkdir -p $out
+    cp --no-preserve=mode -r ${combined-src}/kernel/. $out/
   '';
 }

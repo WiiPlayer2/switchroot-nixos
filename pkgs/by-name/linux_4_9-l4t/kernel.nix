@@ -34,6 +34,7 @@ buildLinux (
       DRM_TEGRA = no;
       EVENTLIB = no;
       EXTCON_ADC_JACK = no;
+      GDB_SCRIPTS = yes;
       HMM_DMIRROR = no;
       I2C_TEGRA194_SLAVE = no;
       INV_ICM42600_I2C = no;
@@ -81,7 +82,13 @@ buildLinux (
         name = "03-add_dtbs_install_target.patch";
         patch = ./patches/03-add_dtbs_install_target.patch;
       }
+      {
+        name = "04-add_scripts_gdb_target.patch";
+        patch = ./patches/04-add_scripts_gdb_target.patch;
+      }
     ];
+
+    passthru.combined-src = sources.combined-src;
   }
   // (args.argsOverride or { })
 )

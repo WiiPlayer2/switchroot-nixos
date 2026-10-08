@@ -1,0 +1,29 @@
+diff --git a/Makefile b/Makefile
+index dd13bec0..5923ced5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1590,6 +1590,10 @@ $(DOC_TARGETS): scripts_basic FORCE
+ 	$(Q)$(MAKE) $(build)=Documentation -f $(srctree)/Documentation/Makefile.sphinx $@
+ 	$(Q)$(MAKE) $(build)=Documentation/DocBook $@
+
++scripts_gdb: prepare0
++	$(Q)$(MAKE) $(build)=scripts/gdb
++	$(Q)ln -fsn $(abspath $(srctree)/scripts/gdb/vmlinux-gdb.py)
++
+ else # KBUILD_EXTMOD
+
+ ###
+diff --git a/scripts/gdb/linux/Makefile b/scripts/gdb/linux/Makefile
+index 8b00031f..dda2cb74 100644
+--- a/scripts/gdb/linux/Makefile
++++ b/scripts/gdb/linux/Makefile
+@@ -1,9 +1,9 @@
+ always := gdb-scripts
+
+-SRCTREE := $(shell cd $(srctree) && /bin/pwd)
++SRCTREE := $(shell cd $(srctree) && pwd)
+
+ $(obj)/gdb-scripts:
+ ifneq ($(KBUILD_SRC),)
+ 	$(Q)ln -fsn $(SRCTREE)/$(obj)/*.py $(objtree)/$(obj)
+ endif
